@@ -1,6 +1,7 @@
 from itertools import count
 import random
 
+counter = 0
 main_list = [
     ["R", "R", "R ", "R ", "R", "R", " ", " ", " ", "G", "G", "G ", "G ", "G", "G"],
     ["R", " ", "  ", "  ", " ", "R", " ", " ", " ", "G", " ", "  ", "  ", " ", "G"],
@@ -31,6 +32,10 @@ maindict = {
         "r3_current_postition": [3, 2],
         "r4_current_postition": [3, 3],
         "is_started": False,
+        "r1_is_completed": False,
+        "r2_is_completed": False,
+        "r3_is_completed": False,
+        "r4_is_completed": False,
         "is_completed": False,
     },
     2: {
@@ -43,6 +48,10 @@ maindict = {
         "b2_current_postition": [11, 3],
         "b3_current_postition": [12, 2],
         "b4_current_postition": [12, 3],
+        "b1_is_completed": False,
+        "b2_is_completed": False,
+        "b3_is_completed": False,
+        "b4_is_completed": False,
         "is_started": False,
         "is_completed": False,
     },
@@ -56,6 +65,10 @@ maindict = {
         "g2_current_postition": [2, 12],
         "g3_current_postition": [3, 11],
         "g4_current_postition": [3, 12],
+        "g1_is_completed": False,
+        "g2_is_completed": False,
+        "g3_is_completed": False,
+        "g4_is_completed": False,
         "is_started": False,
         "is_completed": False,
     },
@@ -69,6 +82,10 @@ maindict = {
         "y2_current_postition": [11, 12],
         "y3_current_postition": [12, 11],
         "y4_current_postition": [12, 12],
+        "y1_is_completed": False,
+        "y2_is_completed": False,
+        "y3_is_completed": False,
+        "y4_is_completed": False,
         "is_started": False,
         "is_completed": False,
     },
@@ -435,6 +452,51 @@ def random_number():
     return random.randint(1, 6)
 
 
+def kill_token(token, token_moving):
+    if token[0] == "r":
+        current_index = maindict[1][f"{token}_current_postition"]
+        maindict[1][f"{token}_current_postition"] = maindict[1][
+            f"{token}_actual_postition"
+        ]
+
+        actual_index = maindict[1][f"{token}_actual_postition"]
+
+        main_list[actual_index[0]][actual_index[1]] = token.upper()
+        main_list[current_index[0]][current_index[1]] = token_moving.upper()
+    elif token[0] == "b":
+
+        current_index = maindict[2][f"{token}_current_postition"]
+        maindict[2][f"{token}_current_postition"] = maindict[2][
+            f"{token}_actual_postition"
+        ]
+
+        actual_index = maindict[2][f"{token}_actual_postition"]
+
+        main_list[actual_index[0]][actual_index[1]] = token.upper()
+        main_list[current_index[0]][current_index[1]] = token_moving.upper()
+
+    elif token[0] == "g":
+        current_index = maindict[3][f"{token}_current_postition"]
+        maindict[3][f"{token}_current_postition"] = maindict[3][
+            f"{token}_actual_postition"
+        ]
+
+        actual_index = maindict[3][f"{token}_actual_postition"]
+
+        main_list[actual_index[0]][actual_index[1]] = token.upper()
+        main_list[current_index[0]][current_index[1]] = token_moving.upper()
+    else:
+        current_index = maindict[4][f"{token}_current_postition"]
+        maindict[4][f"{token}_current_postition"] = maindict[4][
+            f"{token}_actual_postition"
+        ]
+
+        actual_index = maindict[4][f"{token}_actual_postition"]
+
+        main_list[actual_index[0]][actual_index[1]] = token.upper()
+        main_list[current_index[0]][current_index[1]] = token_moving.upper()
+
+
 def move_token(id, num, token_moving, new_lst):
     if token_moving in new_lst:
         if len(new_lst) != 0:
@@ -447,10 +509,7 @@ def move_token(id, num, token_moving, new_lst):
                     + num
                 )
                 maindict[id][f"{token_moving}_current_postition"] = player_1_path[index]
-                # print(
-                #     main_list[player_1_path[index][0]][player_1_path[index][1]],
-                #     "asjkdhaskhdashdk",
-                # )
+
                 if (
                     main_list[player_1_path[index][0]][player_1_path[index][1]].strip()
                     == ""
@@ -458,26 +517,58 @@ def move_token(id, num, token_moving, new_lst):
                     main_list[player_1_path[index][0]][
                         player_1_path[index][1]
                     ] = token_moving.upper()
-                else:
-                    main_list[player_1_path[index][0]][player_1_path[index][1]] = (
-                        main_list[player_1_path[index][0]][player_1_path[index][1]]
-                        + ","
-                        + token_moving.upper()
-                    )
-                # if(len(main_list[pos[0]][pos[1]].split(","))==1):
-                #     main_list[pos[0]][pos[1]] = "   "
-                # else:
-                #     lst=main_list[pos[0]][pos[1]].split(",")
-                #     new_lst=[]
-                #     for i in lst:
-                #         new_lst.append(i.lower())
+                elif player_1_path[index] == player_1_path[len(player_1_path) - 1]:
+                    maindict[id][f"{token_moving}_is_completed"] = True
+                    if (
+                        main_list[player_1_path[index][0]][
+                            player_1_path[index][1]
+                        ].strip()
+                        == "-"
+                    ):
 
-                #     index=new_lst.index(token_moving)
-                #     new_lst.remove(new_lst[index])
-                #     lst=[]
-                #     for i in new_lst:
-                #         lst.append(i.upper())
-                #     main_list[pos[0]][pos[1]] = (",").join(lst)
+                        main_list[player_1_path[index][0]][
+                            player_1_path[index][1]
+                        ] = token_moving.upper()
+                    else:
+                        main_list[player_1_path[index][0]][player_1_path[index][1]] = (
+                            main_list[player_1_path[index][0]][player_1_path[index][1]]
+                            + ","
+                            + token_moving.upper()
+                        )
+
+                    if (
+                        maindict[1]["r1_is_completed"]
+                        and maindict[1]["r2_is_completed"]
+                        and maindict[1]["r3_is_completed"]
+                        and maindict[1]["r4_is_completed"]
+                    ):
+                        maindict[1]["is_completed"] = True
+                else:
+                    safe_or_not = [player_1_path[index][0], player_1_path[index][1]]
+                    if safe_or_not in safe_zone:
+
+                        main_list[player_1_path[index][0]][player_1_path[index][1]] = (
+                            main_list[player_1_path[index][0]][player_1_path[index][1]]
+                            + ","
+                            + token_moving.upper()
+                        )
+                    elif (
+                        token_moving[0]
+                        == main_list[player_1_path[index][0]][player_1_path[index][1]][
+                            0
+                        ].lower()
+                    ):
+                        main_list[player_1_path[index][0]][player_1_path[index][1]] = (
+                            main_list[player_1_path[index][0]][player_1_path[index][1]]
+                            + ","
+                            + token_moving.upper()
+                        )
+                    else:
+                        token = main_list[player_1_path[index][0]][
+                            player_1_path[index][1]
+                        ].lower()
+                        kill_token(token, token_moving)
+
             if id == 2:
                 index = (
                     player_2_path.index(
@@ -493,12 +584,62 @@ def move_token(id, num, token_moving, new_lst):
                     main_list[player_2_path[index][0]][
                         player_2_path[index][1]
                     ] = token_moving.upper()
+                elif player_2_path[index] == player_2_path[len(player_2_path) - 1]:
+                    maindict[id][f"{token_moving}_is_completed"] = True
+                    if (
+                        main_list[player_2_path[index][0]][
+                            player_2_path[index][1]
+                        ].strip()
+                        == "-"
+                    ):
+
+                        main_list[player_2_path[index][0]][
+                            player_2_path[index][1]
+                        ] = token_moving.upper()
+                    else:
+                        main_list[player_2_path[index][0]][player_2_path[index][1]] = (
+                            main_list[player_2_path[index][0]][player_2_path[index][1]]
+                            + ","
+                            + token_moving.upper()
+                        )
+
+                    if (
+                        maindict[2]["b1_is_completed"]
+                        and maindict[2]["b2_is_completed"]
+                        and maindict[2]["b3_is_completed"]
+                        and maindict[2]["b4_is_completed"]
+                    ):
+                        maindict[2]["is_completed"] = True
                 else:
-                    main_list[player_2_path[index][0]][player_2_path[index][1]] = (
-                        main_list[player_2_path[index][0]][player_2_path[index][1]]
-                        + ","
-                        + token_moving.upper()
-                    )
+                    safe_or_not = [player_2_path[index][0], player_2_path[index][1]]
+                    if safe_or_not in safe_zone:
+
+                        main_list[player_2_path[index][0]][player_2_path[index][1]] = (
+                            main_list[player_2_path[index][0]][player_2_path[index][1]]
+                            + ","
+                            + token_moving.upper()
+                        )
+                    elif (
+                        token_moving[0]
+                        == main_list[player_2_path[index][0]][player_2_path[index][1]][
+                            0
+                        ].lower()
+                    ):
+                        main_list[player_2_path[index][0]][player_2_path[index][1]] = (
+                            main_list[player_2_path[index][0]][player_2_path[index][1]]
+                            + ","
+                            + token_moving.upper()
+                        )
+                    else:
+                        token = main_list[player_2_path[index][0]][
+                            player_2_path[index][1]
+                        ].lower()
+                        kill_token(token, token_moving)
+                    # main_list[player_2_path[index][0]][player_2_path[index][1]] = (
+                    #     main_list[player_2_path[index][0]][player_2_path[index][1]]
+                    #     + ","
+                    #     + token_moving.upper()
+                    # )
 
                 # main_list[pos[0]][pos[1]] = "   "
             if id == 3:
@@ -517,12 +658,62 @@ def move_token(id, num, token_moving, new_lst):
                     main_list[player_3_path[index][0]][
                         player_3_path[index][1]
                     ] = token_moving.upper()
+                elif player_3_path[index] == player_3_path[len(player_3_path) - 1]:
+                    maindict[id][f"{token_moving}_is_completed"] = True
+                    if (
+                        main_list[player_3_path[index][0]][
+                            player_3_path[index][1]
+                        ].strip()
+                        == "-"
+                    ):
+
+                        main_list[player_3_path[index][0]][
+                            player_3_path[index][1]
+                        ] = token_moving.upper()
+                    else:
+                        main_list[player_3_path[index][0]][player_3_path[index][1]] = (
+                            main_list[player_3_path[index][0]][player_3_path[index][1]]
+                            + ","
+                            + token_moving.upper()
+                        )
+
+                    if (
+                        maindict[3]["g1_is_completed"]
+                        and maindict[3]["g2_is_completed"]
+                        and maindict[3]["g3_is_completed"]
+                        and maindict[3]["g4_is_completed"]
+                    ):
+                        maindict[3]["is_completed"] = True
                 else:
-                    main_list[player_3_path[index][0]][player_3_path[index][1]] = (
-                        main_list[player_3_path[index][0]][player_3_path[index][1]]
-                        + ","
-                        + token_moving.upper()
-                    )
+                    # main_list[player_3_path[index][0]][player_3_path[index][1]] = (
+                    #     main_list[player_3_path[index][0]][player_3_path[index][1]]
+                    #     + ","
+                    #     + token_moving.upper()
+                    # )
+                    safe_or_not = [player_3_path[index][0], player_3_path[index][1]]
+                    if safe_or_not in safe_zone:
+
+                        main_list[player_3_path[index][0]][player_3_path[index][1]] = (
+                            main_list[player_3_path[index][0]][player_3_path[index][1]]
+                            + ","
+                            + token_moving.upper()
+                        )
+                    elif (
+                        token_moving[0]
+                        == main_list[player_3_path[index][0]][player_3_path[index][1]][
+                            0
+                        ].lower()
+                    ):
+                        main_list[player_3_path[index][0]][player_3_path[index][1]] = (
+                            main_list[player_3_path[index][0]][player_3_path[index][1]]
+                            + ","
+                            + token_moving.upper()
+                        )
+                    else:
+                        token = main_list[player_3_path[index][0]][
+                            player_3_path[index][1]
+                        ].lower()
+                        kill_token(token, token_moving)
                 # main_list[pos[0]][pos[1]] = "   "
             if id == 4:
                 index = (
@@ -540,12 +731,62 @@ def move_token(id, num, token_moving, new_lst):
                     main_list[player_4_path[index][0]][
                         player_4_path[index][1]
                     ] = token_moving.upper()
+                elif player_4_path[index] == player_4_path[len(player_4_path) - 1]:
+                    maindict[id][f"{token_moving}_is_completed"] = True
+                    if (
+                        main_list[player_4_path[index][0]][
+                            player_4_path[index][1]
+                        ].strip()
+                        == "-"
+                    ):
+
+                        main_list[player_4_path[index][0]][
+                            player_4_path[index][1]
+                        ] = token_moving.upper()
+                    else:
+                        main_list[player_4_path[index][0]][player_4_path[index][1]] = (
+                            main_list[player_4_path[index][0]][player_4_path[index][1]]
+                            + ","
+                            + token_moving.upper()
+                        )
+
+                    if (
+                        maindict[4]["y1_is_completed"]
+                        and maindict[4]["y2_is_completed"]
+                        and maindict[4]["y3_is_completed"]
+                        and maindict[4]["y4_is_completed"]
+                    ):
+                        maindict[4]["is_completed"] = True
                 else:
-                    main_list[player_4_path[index][0]][player_4_path[index][1]] = (
-                        main_list[player_4_path[index][0]][player_4_path[index][1]]
-                        + ","
-                        + token_moving.upper()
-                    )
+                    safe_or_not = [player_4_path[index][0], player_4_path[index][1]]
+                    if safe_or_not in safe_zone:
+
+                        main_list[player_4_path[index][0]][player_4_path[index][1]] = (
+                            main_list[player_4_path[index][0]][player_4_path[index][1]]
+                            + ","
+                            + token_moving.upper()
+                        )
+                    elif (
+                        token_moving[0]
+                        == main_list[player_4_path[index][0]][player_4_path[index][1]][
+                            0
+                        ].lower()
+                    ):
+                        main_list[player_4_path[index][0]][player_4_path[index][1]] = (
+                            main_list[player_4_path[index][0]][player_4_path[index][1]]
+                            + ","
+                            + token_moving.upper()
+                        )
+                    else:
+                        token = main_list[player_4_path[index][0]][
+                            player_4_path[index][1]
+                        ].lower()
+                        kill_token(token, token_moving)
+                    # main_list[player_4_path[index][0]][player_4_path[index][1]] = (
+                    #     main_list[player_4_path[index][0]][player_4_path[index][1]]
+                    #     + ","
+                    #     + token_moving.upper()
+                    # )
                 # main_list[pos[0]][pos[1]] = "   "
             if len(main_list[pos[0]][pos[1]].split(",")) == 1:
                 main_list[pos[0]][pos[1]] = "   "
@@ -616,9 +857,10 @@ def check_user(id, num):
                 ) <= len(player_4_path):
                     new_lst.append(i)
 
-        print(new_lst)
-        token_moving = input("token name for move :")
-        move_token(id, num, token_moving, new_lst)
+        if len(new_lst) > 0:
+            print(new_lst)
+            token_moving = input("token name for move :")
+            move_token(id, num, token_moving, new_lst)
 
 
 def print_ludo():
@@ -689,17 +931,28 @@ def play_ludo_pleyer(length):
     for i in count(0):
 
         for id in range(1, length + 1):
-            if maindict[id]["is_completed"] == False:
-                print(f"Turn of pleyer {id} : ")
-                num = int(input("enter digit : "))
-                # input(f"press any key : ")
-                # num = random_number()
-                print("\nyou got :", num, "\n")
-                check_user(id, num)
-                print_ludo()
+            counter = 0
+            for i in count(0):
+                if maindict[id]["is_completed"] == False:
+                    print(f"Turn of pleyer {id} : ")
+                    num = int(input("enter digit : "))
+                    # input(f"press any key : ")
+                    # num = random_number()
 
-            else:
-                continue
+                    if counter == 2 and num == 6:
+                        continue
+                    elif num == 6:
+                        print("\nyou got :", num, "\n")
+                        check_user(id, num)
+                        print_ludo()
+                        counter = counter + 1
+                    else:
+                        print("\nyou got :", num, "\n")
+                        check_user(id, num)
+                        print_ludo()
+                        break
+                else:
+                    continue
 
 
 def start_ludo(pleyers):
