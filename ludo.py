@@ -309,6 +309,16 @@ player_1_path = [
     [7, 5],
     [7, 6],
 ]
+safe_zone = [
+    [2, 6],
+    [1, 8],
+    [6, 12],
+    [8, 13],
+    [12, 8],
+    [13, 6],
+    [8, 2],
+    [6, 1],
+]
 
 
 def check_token_outside(id):
@@ -360,44 +370,6 @@ def check_token_inside_house(id):
 
 
 def keep_token_outside(id, token_for_out_side, inside_lst):
-    # lst = check_token_outside(id)
-    # final_lst = []
-    # for i in range(1, 5):
-    #     ele = f"{maindict[id]['color'].lower()}{i}"
-    #     if ele not in lst:
-    #         final_lst.append(ele)
-    # print(final_lst)
-    # token_for_out_side = input("get token out of house :")
-    # if token_for_out_side in final_lst:
-    #     pos_change = f"{token_for_out_side}_current_postition"
-    #     pos = maindict[id][pos_change]
-
-    #     if id == 1:
-    #         maindict[id][pos_change] = player_1_path[0]
-    #         main_list[player_1_path[0][0]][
-    #             player_1_path[0][1]
-    #         ] = token_for_out_side.upper()
-    #         main_list[pos[0]][pos[1]] = "   "
-    #     elif id == 2:
-    #         maindict[id][pos_change] = player_2_path[0]
-    #         main_list[player_2_path[0][0]][
-    #             player_2_path[0][1]
-    #         ] = token_for_out_side.upper()
-    #         main_list[pos[0]][pos[1]] = "   "
-
-    #     elif id == 3:
-    #         maindict[id][pos_change] = player_3_path[0]
-    #         main_list[player_3_path[0][0]][
-    #             player_3_path[0][1]
-    #         ] = token_for_out_side.upper()
-    #         main_list[pos[0]][pos[1]] = "   "
-
-    #     elif id == 4:
-    #         maindict[id][pos_change] = player_4_path[0]
-    #         main_list[player_4_path[0][0]][
-    #             player_4_path[0][1]
-    #         ] = token_for_out_side.upper()
-    #         main_list[pos[0]][pos[1]] = "   "
     if token_for_out_side in inside_lst:
         pos_change = f"{token_for_out_side}_current_postition"
         pos = maindict[id][pos_change]
@@ -442,6 +414,19 @@ def keep_token_outside(id, token_for_out_side, inside_lst):
                     + token_for_out_side.upper()
                 )
             main_list[pos[0]][pos[1]] = "   "
+        elif id == 4:
+            maindict[id][pos_change] = player_4_path[0]
+            if main_list[player_4_path[0][0]][player_4_path[0][1]].strip() == "":
+                main_list[player_4_path[0][0]][
+                    player_4_path[0][1]
+                ] = token_for_out_side.upper()
+            else:
+                main_list[player_4_path[0][0]][player_4_path[0][1]] = (
+                    main_list[player_4_path[0][0]][player_4_path[0][1]]
+                    + ","
+                    + token_for_out_side.upper()
+                )
+            main_list[pos[0]][pos[1]] = "   "
     else:
         keep_token_outside(id)
 
@@ -462,11 +447,37 @@ def move_token(id, num, token_moving, new_lst):
                     + num
                 )
                 maindict[id][f"{token_moving}_current_postition"] = player_1_path[index]
+                # print(
+                #     main_list[player_1_path[index][0]][player_1_path[index][1]],
+                #     "asjkdhaskhdashdk",
+                # )
+                if (
+                    main_list[player_1_path[index][0]][player_1_path[index][1]].strip()
+                    == ""
+                ):
+                    main_list[player_1_path[index][0]][
+                        player_1_path[index][1]
+                    ] = token_moving.upper()
+                else:
+                    main_list[player_1_path[index][0]][player_1_path[index][1]] = (
+                        main_list[player_1_path[index][0]][player_1_path[index][1]]
+                        + ","
+                        + token_moving.upper()
+                    )
+                # if(len(main_list[pos[0]][pos[1]].split(","))==1):
+                #     main_list[pos[0]][pos[1]] = "   "
+                # else:
+                #     lst=main_list[pos[0]][pos[1]].split(",")
+                #     new_lst=[]
+                #     for i in lst:
+                #         new_lst.append(i.lower())
 
-                main_list[player_1_path[index][0]][
-                    player_1_path[index][1]
-                ] = token_moving.upper()
-                main_list[pos[0]][pos[1]] = "   "
+                #     index=new_lst.index(token_moving)
+                #     new_lst.remove(new_lst[index])
+                #     lst=[]
+                #     for i in new_lst:
+                #         lst.append(i.upper())
+                #     main_list[pos[0]][pos[1]] = (",").join(lst)
             if id == 2:
                 index = (
                     player_2_path.index(
@@ -475,11 +486,21 @@ def move_token(id, num, token_moving, new_lst):
                     + num
                 )
                 maindict[id][f"{token_moving}_current_postition"] = player_2_path[index]
+                if (
+                    main_list[player_2_path[index][0]][player_2_path[index][1]].strip()
+                    == ""
+                ):
+                    main_list[player_2_path[index][0]][
+                        player_2_path[index][1]
+                    ] = token_moving.upper()
+                else:
+                    main_list[player_2_path[index][0]][player_2_path[index][1]] = (
+                        main_list[player_2_path[index][0]][player_2_path[index][1]]
+                        + ","
+                        + token_moving.upper()
+                    )
 
-                main_list[player_2_path[index][0]][
-                    player_2_path[index][1]
-                ] = token_moving.upper()
-                main_list[pos[0]][pos[1]] = "   "
+                # main_list[pos[0]][pos[1]] = "   "
             if id == 3:
                 index = (
                     player_3_path.index(
@@ -489,10 +510,20 @@ def move_token(id, num, token_moving, new_lst):
                 )
                 maindict[id][f"{token_moving}_current_postition"] = player_3_path[index]
 
-                main_list[player_3_path[index][0]][
-                    player_3_path[index][1]
-                ] = token_moving.upper()
-                main_list[pos[0]][pos[1]] = "   "
+                if (
+                    main_list[player_3_path[index][0]][player_3_path[index][1]].strip()
+                    == ""
+                ):
+                    main_list[player_3_path[index][0]][
+                        player_3_path[index][1]
+                    ] = token_moving.upper()
+                else:
+                    main_list[player_3_path[index][0]][player_3_path[index][1]] = (
+                        main_list[player_3_path[index][0]][player_3_path[index][1]]
+                        + ","
+                        + token_moving.upper()
+                    )
+                # main_list[pos[0]][pos[1]] = "   "
             if id == 4:
                 index = (
                     player_4_path.index(
@@ -502,10 +533,34 @@ def move_token(id, num, token_moving, new_lst):
                 )
                 maindict[id][f"{token_moving}_current_postition"] = player_4_path[index]
 
-                main_list[player_4_path[index][0]][
-                    player_4_path[index][1]
-                ] = token_moving.upper()
+                if (
+                    main_list[player_4_path[index][0]][player_4_path[index][1]].strip()
+                    == ""
+                ):
+                    main_list[player_4_path[index][0]][
+                        player_4_path[index][1]
+                    ] = token_moving.upper()
+                else:
+                    main_list[player_4_path[index][0]][player_4_path[index][1]] = (
+                        main_list[player_4_path[index][0]][player_4_path[index][1]]
+                        + ","
+                        + token_moving.upper()
+                    )
+                # main_list[pos[0]][pos[1]] = "   "
+            if len(main_list[pos[0]][pos[1]].split(",")) == 1:
                 main_list[pos[0]][pos[1]] = "   "
+            else:
+                lst = main_list[pos[0]][pos[1]].split(",")
+                new_lst = []
+                for i in lst:
+                    new_lst.append(i.lower())
+
+                index = new_lst.index(token_moving)
+                new_lst.remove(new_lst[index])
+                lst = []
+                for i in new_lst:
+                    lst.append(i.upper())
+                main_list[pos[0]][pos[1]] = (",").join(lst)
         else:
             print("no token avilable...")
     else:
@@ -578,13 +633,6 @@ def print_ludo():
                 print(f"| {j} |", end=" ")
                 count = count + 1
         print("\n")
-
-    # for i in range(1, pleyers + 1):
-    #     color = maindict[i]["color"].lower()
-    #     for j in range(1, 5):
-    #         searching = f"{color}{j}_current_postition"
-    #         pos = maindict[i][searching]
-    #         main_list[pos[0]][pos[1]] = maindict[i]["color"] + str(j)
 
 
 def token_out_and_in_both(id, num):
