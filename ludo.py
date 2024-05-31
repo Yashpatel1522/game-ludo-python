@@ -359,46 +359,89 @@ def check_token_inside_house(id):
     return lst
 
 
-def keep_token_outside(id):
-    lst = check_token_outside(id)
-    final_lst = []
-    for i in range(1, 5):
-        ele = f"{maindict[id]['color'].lower()}{i}"
-        if ele not in lst:
-            final_lst.append(ele)
-    print(final_lst)
-    token_for_out_side = input("get token out of house :")
-    if token_for_out_side in final_lst:
+def keep_token_outside(id, token_for_out_side, inside_lst):
+    # lst = check_token_outside(id)
+    # final_lst = []
+    # for i in range(1, 5):
+    #     ele = f"{maindict[id]['color'].lower()}{i}"
+    #     if ele not in lst:
+    #         final_lst.append(ele)
+    # print(final_lst)
+    # token_for_out_side = input("get token out of house :")
+    # if token_for_out_side in final_lst:
+    #     pos_change = f"{token_for_out_side}_current_postition"
+    #     pos = maindict[id][pos_change]
+
+    #     if id == 1:
+    #         maindict[id][pos_change] = player_1_path[0]
+    #         main_list[player_1_path[0][0]][
+    #             player_1_path[0][1]
+    #         ] = token_for_out_side.upper()
+    #         main_list[pos[0]][pos[1]] = "   "
+    #     elif id == 2:
+    #         maindict[id][pos_change] = player_2_path[0]
+    #         main_list[player_2_path[0][0]][
+    #             player_2_path[0][1]
+    #         ] = token_for_out_side.upper()
+    #         main_list[pos[0]][pos[1]] = "   "
+
+    #     elif id == 3:
+    #         maindict[id][pos_change] = player_3_path[0]
+    #         main_list[player_3_path[0][0]][
+    #             player_3_path[0][1]
+    #         ] = token_for_out_side.upper()
+    #         main_list[pos[0]][pos[1]] = "   "
+
+    #     elif id == 4:
+    #         maindict[id][pos_change] = player_4_path[0]
+    #         main_list[player_4_path[0][0]][
+    #             player_4_path[0][1]
+    #         ] = token_for_out_side.upper()
+    #         main_list[pos[0]][pos[1]] = "   "
+    if token_for_out_side in inside_lst:
         pos_change = f"{token_for_out_side}_current_postition"
         pos = maindict[id][pos_change]
 
         if id == 1:
             maindict[id][pos_change] = player_1_path[0]
-            main_list[player_1_path[0][0]][
-                player_1_path[0][1]
-            ] = token_for_out_side.upper()
+            if main_list[player_1_path[0][0]][player_1_path[0][1]].strip() == "":
+                main_list[player_1_path[0][0]][
+                    player_1_path[0][1]
+                ] = token_for_out_side.upper()
+            else:
+                main_list[player_1_path[0][0]][player_1_path[0][1]] = (
+                    main_list[player_1_path[0][0]][player_1_path[0][1]]
+                    + ","
+                    + token_for_out_side.upper()
+                )
             main_list[pos[0]][pos[1]] = "   "
         elif id == 2:
             maindict[id][pos_change] = player_2_path[0]
-            main_list[player_2_path[0][0]][
-                player_2_path[0][1]
-            ] = token_for_out_side.upper()
+            if main_list[player_2_path[0][0]][player_2_path[0][1]].strip() == "":
+                main_list[player_2_path[0][0]][
+                    player_2_path[0][1]
+                ] = token_for_out_side.upper()
+            else:
+                main_list[player_2_path[0][0]][player_2_path[0][1]] = (
+                    main_list[player_2_path[0][0]][player_2_path[0][1]]
+                    + ","
+                    + token_for_out_side.upper()
+                )
             main_list[pos[0]][pos[1]] = "   "
 
         elif id == 3:
             maindict[id][pos_change] = player_3_path[0]
-            main_list[player_3_path[0][0]][
-                player_3_path[0][1]
-            ] = token_for_out_side.upper()
+            if main_list[player_3_path[0][0]][player_3_path[0][1]].strip() == "":
+                main_list[player_3_path[0][0]][
+                    player_3_path[0][1]
+                ] = token_for_out_side.upper()
+            else:
+                main_list[player_3_path[0][0]][player_3_path[0][1]] = (
+                    main_list[player_3_path[0][0]][player_3_path[0][1]]
+                    + ","
+                    + token_for_out_side.upper()
+                )
             main_list[pos[0]][pos[1]] = "   "
-
-        elif id == 4:
-            maindict[id][pos_change] = player_4_path[0]
-            main_list[player_4_path[0][0]][
-                player_4_path[0][1]
-            ] = token_for_out_side.upper()
-            main_list[pos[0]][pos[1]] = "   "
-
     else:
         keep_token_outside(id)
 
@@ -475,9 +518,16 @@ def check_user(id, num):
     if len(lst) == 0 and num != 6:
         return
     elif len(lst) == 0 and num == 6:
-        keep_token_outside(id)
+        final_lst = []
+        for i in range(1, 5):
+            ele = f"{maindict[id]['color'].lower()}{i}"
+            if ele not in lst:
+                final_lst.append(ele)
+        print(final_lst)
+        token_for_out_side = input("get token out of house :")
+        keep_token_outside(id, token_for_out_side, final_lst)
     elif len(lst) > 0 and num == 6:
-        token_out_and_in_both(id,num)
+        token_out_and_in_both(id, num)
     elif num != 6 and len(lst) > 0:
         lst = check_token_outside(id)
         new_lst = []
@@ -537,118 +587,53 @@ def print_ludo():
     #         main_list[pos[0]][pos[1]] = maindict[i]["color"] + str(j)
 
 
-def token_out_and_in_both(id,num):
+def token_out_and_in_both(id, num):
     lst = check_token_outside(id)
-    new_lst=[]
+    new_lst = []
     for i in lst:
         if id == 1:
             if (
-                player_1_path.index(maindict[id][f"{i}_current_postition"])
-                + 1
-                + num
+                player_1_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
             ) <= len(player_1_path):
                 new_lst.append(i)
         if id == 2:
             if (
-                player_2_path.index(maindict[id][f"{i}_current_postition"])
-                + 1
-                + num
+                player_2_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
             ) <= len(player_2_path):
                 new_lst.append(i)
         if id == 3:
             if (
-                player_3_path.index(maindict[id][f"{i}_current_postition"])
-                + 1
-                + num
+                player_3_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
             ) <= len(player_3_path):
                 new_lst.append(i)
         if id == 4:
             if (
-                player_4_path.index(maindict[id][f"{i}_current_postition"])
-                + 1
-                + num
+                player_4_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
             ) <= len(player_4_path):
                 new_lst.append(i)
 
     # print(new_lst)
     # inside_lst=[]
-    if len(new_lst)>0:
+    if len(new_lst) > 0:
         print(new_lst, "this token out side of house")
 
     inside_lst = check_token_inside_house(id)
     print(inside_lst, "this token in side of house")
     token_for_out_side = input("enter token for move : ")
-    
+
     if token_for_out_side in lst:
         # new_lst = []
         # token_moving = input("token name for move :")
-        move_token(id, num,token_for_out_side, new_lst)
+        move_token(id, num, token_for_out_side, new_lst)
 
     elif token_for_out_side in inside_lst:
 
-        if token_for_out_side in inside_lst:
-            pos_change = f"{token_for_out_side}_current_postition"
-            pos = maindict[id][pos_change]
+        keep_token_outside(id, token_for_out_side, inside_lst)
 
-        if id == 1:
-            maindict[id][pos_change] = player_1_path[0]
-            if main_list[player_1_path[0][0]][player_1_path[0][1]].strip() == "":
-                main_list[player_1_path[0][0]][
-                    player_1_path[0][1]
-                ] = token_for_out_side.upper()
-            else:
-                main_list[player_1_path[0][0]][player_1_path[0][1]] = (
-                    main_list[player_1_path[0][0]][player_1_path[0][1]]
-                    + ","
-                    + token_for_out_side.upper()
-                )
-            main_list[pos[0]][pos[1]] = "   "
-        elif id == 2:
-            maindict[id][pos_change] = player_2_path[0]
-            if main_list[player_2_path[0][0]][player_2_path[0][1]].strip() == "":
-                main_list[player_2_path[0][0]][
-                    player_2_path[0][1]
-                ] = token_for_out_side.upper()
-            else:
-                main_list[player_2_path[0][0]][player_2_path[0][1]] = (
-                    main_list[player_2_path[0][0]][player_2_path[0][1]]
-                    + ","
-                    + token_for_out_side.upper()
-                )
-            main_list[pos[0]][pos[1]] = "   "
-
-        elif id == 3:
-            maindict[id][pos_change] = player_3_path[0]
-            if main_list[player_3_path[0][0]][player_3_path[0][1]].strip() == "":
-                main_list[player_3_path[0][0]][
-                    player_3_path[0][1]
-                ] = token_for_out_side.upper()
-            else:
-                main_list[player_3_path[0][0]][player_3_path[0][1]] = (
-                    main_list[player_3_path[0][0]][player_3_path[0][1]]
-                    + ","
-                    + token_for_out_side.upper()
-                )
-            main_list[pos[0]][pos[1]] = "   "
-
-        elif id == 4:
-            maindict[id][pos_change] = player_4_path[0]
-            if main_list[player_4_path[0][0]][player_4_path[0][1]].strip() == "":
-                main_list[player_4_path[0][0]][
-                    player_4_path[0][1]
-                ] = token_for_out_side.upper()
-            else:
-                main_list[player_4_path[0][0]][player_4_path[0][1]] = (
-                    main_list[player_4_path[0][0]][player_4_path[0][1]]
-                    + ","
-                    + token_for_out_side.upper()
-                )
-            main_list[pos[0]][pos[1]] = "   "
-
-        else:
-            token_out_and_in_both(id)
     else:
         token_out_and_in_both(id)
+    # else:
+    #     token_out_and_in_both(id)
 
 
 def play_ludo_pleyer(length):
