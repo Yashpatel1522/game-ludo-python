@@ -539,49 +539,53 @@ def print_ludo():
 
 def token_out_and_in_both(id,num):
     lst = check_token_outside(id)
-    print(lst, "this token out side of house")
+    new_lst=[]
+    for i in lst:
+        if id == 1:
+            if (
+                player_1_path.index(maindict[id][f"{i}_current_postition"])
+                + 1
+                + num
+            ) <= len(player_1_path):
+                new_lst.append(i)
+        if id == 2:
+            if (
+                player_2_path.index(maindict[id][f"{i}_current_postition"])
+                + 1
+                + num
+            ) <= len(player_2_path):
+                new_lst.append(i)
+        if id == 3:
+            if (
+                player_3_path.index(maindict[id][f"{i}_current_postition"])
+                + 1
+                + num
+            ) <= len(player_3_path):
+                new_lst.append(i)
+        if id == 4:
+            if (
+                player_4_path.index(maindict[id][f"{i}_current_postition"])
+                + 1
+                + num
+            ) <= len(player_4_path):
+                new_lst.append(i)
+
+    # print(new_lst)
+    # inside_lst=[]
+    if len(new_lst)>0:
+        print(new_lst, "this token out side of house")
+
     inside_lst = check_token_inside_house(id)
     print(inside_lst, "this token in side of house")
-
     token_for_out_side = input("enter token for move : ")
-
+    
     if token_for_out_side in lst:
-        lst = check_token_outside(id)
-        new_lst = []
-        for i in lst:
-            if id == 1:
-                if (
-                    player_1_path.index(maindict[id][f"{i}_current_postition"])
-                    + 1
-                    + num
-                ) <= len(player_1_path):
-                    new_lst.append(i)
-            if id == 2:
-                if (
-                    player_2_path.index(maindict[id][f"{i}_current_postition"])
-                    + 1
-                    + num
-                ) <= len(player_2_path):
-                    new_lst.append(i)
-            if id == 3:
-                if (
-                    player_3_path.index(maindict[id][f"{i}_current_postition"])
-                    + 1
-                    + num
-                ) <= len(player_3_path):
-                    new_lst.append(i)
-            if id == 4:
-                if (
-                    player_4_path.index(maindict[id][f"{i}_current_postition"])
-                    + 1
-                    + num
-                ) <= len(player_4_path):
-                    new_lst.append(i)
+        # new_lst = []
+        # token_moving = input("token name for move :")
+        move_token(id, num,token_for_out_side, new_lst)
 
-        print(new_lst)
-        token_moving = input("token name for move :")
-        move_token(id, num, token_moving, new_lst)
     elif token_for_out_side in inside_lst:
+
         if token_for_out_side in inside_lst:
             pos_change = f"{token_for_out_side}_current_postition"
             pos = maindict[id][pos_change]
