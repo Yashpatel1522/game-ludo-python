@@ -407,36 +407,36 @@ def random_number():
     return random.randint(1, 6)
 
 
-def move_token(id, num):
-    lst = check_token_outside(id)
-    new_lst = []
-    for i in lst:
-        if id == 1:
-            if (
-                player_1_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
-            ) <= len(player_1_path):
-                new_lst.append(i)
-        if id == 2:
-            if (
-                player_2_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
-            ) <= len(player_2_path):
-                new_lst.append(i)
-        if id == 3:
-            if (
-                player_3_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
-            ) <= len(player_3_path):
-                new_lst.append(i)
-        if id == 4:
-            if (
-                player_4_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
-            ) <= len(player_4_path):
-                new_lst.append(i)
+def move_token(id, num,token_moving,new_lst):
+    # lst = check_token_outside(id)
+    # new_lst = []
+    # for i in lst:
+    #     if id == 1:
+    #         if (
+    #             player_1_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
+    #         ) <= len(player_1_path):
+    #             new_lst.append(i)
+    #     if id == 2:
+    #         if (
+    #             player_2_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
+    #         ) <= len(player_2_path):
+    #             new_lst.append(i)
+    #     if id == 3:
+    #         if (
+    #             player_3_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
+    #         ) <= len(player_3_path):
+    #             new_lst.append(i)
+    #     if id == 4:
+    #         if (
+    #             player_4_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
+    #         ) <= len(player_4_path):
+    #             new_lst.append(i)
 
-    print(new_lst)
-    token_moving = input("token name for move :")
+    # print(new_lst)
+    # token_moving = input("token name for move :")
     if token_moving in new_lst:
         if len(new_lst) != 0:
-            pos = maindict[id][f"{i}_current_postition"]
+            pos = maindict[id][f"{token_moving}_current_postition"]
             if id == 1:
                 index = (
                     player_1_path.index(
@@ -505,7 +505,33 @@ def check_user(id, num):
     elif len(lst) > 0 and num == 6:
         token_out_and_in_both(id)
     elif num != 6 and len(lst) > 0:
-        move_token(id, num)
+        lst = check_token_outside(id)
+        new_lst = []
+        for i in lst:
+            if id == 1:
+                if (
+                    player_1_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
+                ) <= len(player_1_path):
+                    new_lst.append(i)
+            if id == 2:
+                if (
+                    player_2_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
+                ) <= len(player_2_path):
+                    new_lst.append(i)
+            if id == 3:
+                if (
+                    player_3_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
+                ) <= len(player_3_path):
+                    new_lst.append(i)
+            if id == 4:
+                if (
+                    player_4_path.index(maindict[id][f"{i}_current_postition"]) + 1 + num
+                ) <= len(player_4_path):
+                    new_lst.append(i)
+
+        print(new_lst)
+        token_moving = input("token name for move :")
+        move_token(id, num,token_moving,new_lst)
 
 
 def print_ludo():
