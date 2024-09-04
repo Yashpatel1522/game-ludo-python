@@ -29,5 +29,4 @@ This is a Python implementation of the classic board game **Ludo**. The game sup
 
 ### Explanation
 - **Number of Players:** The README specifies that the game supports 2, 3, or 4 players and provides instructions based on this flexibility.
-- **Game Flow:** The README includes basic instructions on gameplay and examples, which should help users understand how to interact with the game.
 - **Code Overview:** This section gives a brief description of key functions, which you can adjust based on the actual implementation details of your `ludo.py` script.
